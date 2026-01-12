@@ -888,6 +888,42 @@ section {
     border-top: 1px solid rgba(42, 74, 107, 0.5);
 }
 
+.download-note {
+    margin-top: 2rem;
+    padding: 1.5rem;
+    background: rgba(0, 191, 255, 0.1);
+    border: 1px solid var(--primary-color);
+    border-radius: 8px;
+    text-align: center;
+}
+
+.download-note p {
+    color: var(--text-secondary);
+    margin: 0;
+    line-height: 1.8;
+}
+
+.download-note code {
+    background: rgba(0, 0, 0, 0.3);
+    padding: 0.2rem 0.5rem;
+    border-radius: 3px;
+    color: var(--primary-color);
+    font-family: 'Courier New', monospace;
+    font-size: 0.9rem;
+}
+
+.btn-icon {
+    margin-right: 0.5rem;
+    font-size: 1.2em;
+}
+
+.btn-size {
+    margin-left: 0.5rem;
+    font-size: 0.85em;
+    opacity: 0.8;
+    font-weight: normal;
+}
+
 /* Footer */
 .footer {
     background: #0a1118;
