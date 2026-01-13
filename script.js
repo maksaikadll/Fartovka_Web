@@ -44,6 +44,29 @@ navLinks.forEach(link => {
     });
 });
 
+// Smooth scroll for download button link in hero section
+document.querySelectorAll('a[href="#download-launcher-btn"]').forEach(link => {
+    link.addEventListener('click', function (e) {
+        e.preventDefault();
+        const targetElement = document.querySelector('#download-launcher-btn');
+        if (targetElement) {
+            const offsetTop = targetElement.offsetTop - 100;
+            window.scrollTo({
+                top: offsetTop,
+                behavior: 'smooth'
+            });
+            // Highlight the button briefly after scroll
+            setTimeout(() => {
+                targetElement.style.transform = 'scale(1.05)';
+                targetElement.style.transition = 'transform 0.3s ease';
+                setTimeout(() => {
+                    targetElement.style.transform = '';
+                }, 300);
+            }, 500);
+        }
+    });
+});
+
 // Rules tabs functionality
 const tabButtons = document.querySelectorAll('.tab-btn');
 const rulePanels = document.querySelectorAll('.rules-panel');
