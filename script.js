@@ -231,7 +231,7 @@ if ('IntersectionObserver' in window) {
 console.log('%cФАРТОВКА', 'font-size: 50px; font-weight: bold; color: #00BFFF; text-shadow: 2px 2px 4px rgba(0,0,0,0.5);');
 console.log('%cКарточная игра с магией и стратегией', 'font-size: 16px; color: #E8F4F8;');
 
-const tiltCards = document.querySelectorAll('.feature-card, .card-type, .benefit-item, .stat-item, .step-item');
+const tiltCards = document.querySelectorAll('.feature-card, .card-type, .benefit-item, .stat-item');
 tiltCards.forEach(card => {
     const handleMove = (e) => {
         const rect = card.getBoundingClientRect();
