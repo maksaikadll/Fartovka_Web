@@ -1,0 +1,27 @@
+# Archive files
+*.rar
+*.zip
+*.7z
+*.tar.gz
+*.tar.bz2
+
+# Large binary files
+*.exe
+*.msi
+*.dmg
+*.pkg
+
+# Temporary files
+*.tmp
+*.temp
+*.log
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db
