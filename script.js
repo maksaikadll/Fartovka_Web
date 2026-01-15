@@ -250,3 +250,25 @@ if ('IntersectionObserver' in window) {
 // Console message
 console.log('%cФАРТОВКА', 'font-size: 50px; font-weight: bold; color: #00BFFF; text-shadow: 2px 2px 4px rgba(0,0,0,0.5);');
 console.log('%cКарточная игра с магией и стратегией', 'font-size: 16px; color: #E8F4F8;');
+
+// Tilt effect for cards (Steam-like)
+const tiltCards = document.querySelectorAll('.feature-card, .card-type, .benefit-item, .stat-item, .step-item');
+tiltCards.forEach(card => {
+    const handleMove = (e) => {
+        const rect = card.getBoundingClientRect();
+        const x = (e.clientX - rect.left) / rect.width;
+        const y = (e.clientY - rect.top) / rect.height;
+        const rotateY = (x - 0.5) * 18; // left/right
+        const rotateX = (0.5 - y) * 18; // up/down
+        card.style.transform = `perspective(900px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.08)`;
+        card.style.boxShadow = '0 25px 60px rgba(0, 191, 255, 0.32)';
+    };
+
+    const handleLeave = () => {
+        card.style.transform = 'perspective(900px) translateY(0) scale(1)';
+        card.style.boxShadow = '';
+    };
+
+    card.addEventListener('mousemove', handleMove);
+    card.addEventListener('mouseleave', handleLeave);
+});

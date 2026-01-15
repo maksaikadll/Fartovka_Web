@@ -267,6 +267,15 @@
                 <h2 class="section-title">СКАЧАТЬ ЛАУНЧЕР</h2>
                 <div class="title-underline"></div>
             </div>
+            <div class="download-buttons" style="margin-top: 32px; margin-bottom: 32px; display: flex; gap: 16px; flex-wrap: wrap;">
+                <a href="Fartovka Launcher-Setup-1.0.0.exe" class="btn btn-primary btn-large" download="Fartovka Launcher-Setup-1.0.0.exe" id="download-launcher-btn">
+                    <span class="btn-icon">⬇</span>
+                    <span class="btn-text">Скачать установщик лаунчера</span>
+                    <span class="btn-size">(~100-200 МБ)</span>
+                </a>
+                <a href="#download-steps" class="btn btn-secondary btn-large">Инструкция по установке</a>
+                <a href="../Launcher/README.md" class="btn btn-secondary btn-large">Документация</a>
+            </div>
             <div class="download-content">
                 <div class="launcher-benefits">
                     <h3>Преимущества лаунчера</h3>
@@ -276,11 +285,7 @@
                             <h4>Быстрый запуск</h4>
                             <p>Запускайте игру одним кликом без необходимости открывать терминал</p>
                         </div>
-                        <div class="benefit-item">
-                            <div class="benefit-icon">📋</div>
-                            <h4>Просмотр логов</h4>
-                            <p>Удобный просмотр логов лаунчера и игры прямо в интерфейсе</p>
-                        </div>
+
                         <div class="benefit-item">
                             <div class="benefit-icon">⚙️</div>
                             <h4>Настройки</h4>
@@ -300,12 +305,12 @@
                         <li>Windows 7+ (x64)</li>
                         <li>512 MB RAM</li>
                         <li>200 MB свободного места (для установщика и игры)</li>
-                        <li>Интернет-соединение (для скачивания игры при первом запуске)</li>
+                        <li>Интернет-соединение</li>
                         <li>Разрешение экрана: 800x600 или выше</li>
                     </ul>
                 </div>
                 <div class="download-steps">
-                    <h3>Установка лаунчера</h3>
+                    <h3 id="download-steps">Установка лаунчера</h3>
                     <div class="step-item">
                         <div class="step-number">1</div>
                         <div class="step-content">
@@ -341,15 +346,6 @@
                             <p>Нажмите кнопку "Запустить игру" в лаунчере. Игра автоматически скачается с GitHub, если не найдена локально!</p>
                         </div>
                     </div>
-                </div>
-                <div class="download-buttons">
-                    <a href="Fartovka Launcher-Setup-1.0.0.exe" class="btn btn-primary btn-large" download="Fartovka Launcher-Setup-1.0.0.exe" id="download-launcher-btn">
-                        <span class="btn-icon">⬇</span>
-                        <span class="btn-text">Скачать установщик лаунчера</span>
-                        <span class="btn-size">(~100-200 МБ)</span>
-                    </a>
-                    <a href="../Launcher/INSTALL.md" class="btn btn-secondary btn-large">Инструкция по установке</a>
-                    <a href="../Launcher/README.md" class="btn btn-secondary btn-large">Документация</a>
                 </div>
                 <div class="download-note">
                     <p>💡 <strong>Примечание:</strong> Установщик включает в себя все необходимые компоненты (Node.js, Electron и зависимости). Просто запустите exe файл и следуйте инструкциям установщика. После установки лаунчер будет работать независимо от наличия Node.js на вашем компьютере.</p>
