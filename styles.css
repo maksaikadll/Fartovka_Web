@@ -1,4 +1,4 @@
-/* Reset and Base Styles */
+
 * {
     margin: 0;
     padding: 0;
@@ -35,7 +35,6 @@ body {
     padding: 0 20px;
 }
 
-/* Navigation */
 .navbar {
     position: fixed;
     top: 0;
@@ -128,7 +127,6 @@ body {
     transition: all 0.3s ease;
 }
 
-/* Hero Section */
 .hero {
     position: relative;
     min-height: 100vh;
@@ -318,7 +316,6 @@ body {
     100% { opacity: 0; transform: translateX(-50%) translateY(15px); }
 }
 
-/* Section Styles */
 section {
     padding: 100px 0;
     position: relative;
@@ -350,7 +347,6 @@ section {
     border-radius: 2px;
 }
 
-/* About Section */
 .about {
     background: linear-gradient(135deg, #1A2F4A 0%, #0A1A2E 100%);
 }
@@ -415,7 +411,6 @@ section {
     letter-spacing: 1px;
 }
 
-/* Features Section */
 .features {
     background: linear-gradient(135deg, #0A1A2E 0%, #1A2F4A 100%);
 }
@@ -462,7 +457,6 @@ section {
     line-height: 1.8;
 }
 
-/* Cards Showcase */
 .cards-showcase {
     background: linear-gradient(135deg, #1A2F4A 0%, #0A1A2E 100%);
 }
@@ -522,7 +516,6 @@ section {
     letter-spacing: 2px;
 }
 
-/* Rules Section */
 .rules {
     background: linear-gradient(135deg, #0A1A2E 0%, #1A2F4A 100%);
 }
@@ -627,7 +620,6 @@ section {
     color: var(--text-primary);
 }
 
-/* Download Section */
 .download {
     background: linear-gradient(135deg, #1A2F4A 0%, #0A1A2E 100%);
 }
@@ -757,7 +749,6 @@ section {
     margin-top: 3rem;
 }
 
-/* Launcher Benefits */
 .launcher-benefits h3 {
     font-family: 'Oswald', sans-serif;
     font-size: 1.8rem;
@@ -814,7 +805,6 @@ section {
     margin: 0;
 }
 
-/* Steam-like collectible card hover + tilt */
 .feature-card,
 .card-type,
 .benefit-item,
@@ -892,7 +882,6 @@ section {
     transform: rotate(0deg) translateY(18%);
 }
 
-/* Collectible-card hover (Steam-like inspect) */
 .feature-card,
 .card-type,
 .benefit-item,
@@ -965,7 +954,6 @@ section {
     transform: rotate(0deg) translateY(12%);
 }
 
-/* Build Info */
 .build-info h3 {
     font-family: 'Oswald', sans-serif;
     font-size: 1.5rem;
@@ -1075,7 +1063,6 @@ section {
     font-weight: normal;
 }
 
-/* Footer */
 .footer {
     background: #0a1118;
     border-top: 1px solid var(--border-color);
@@ -1130,7 +1117,6 @@ section {
     color: var(--text-muted);
 }
 
-/* Responsive Design */
 @media (max-width: 768px) {
     .nav-menu {
         position: fixed;
@@ -1223,18 +1209,15 @@ section {
     }
 }
 
-/* Smooth Scrolling */
 html {
     scroll-behavior: smooth;
 }
 
-/* Selection */
 ::selection {
     background: var(--primary-color);
     color: var(--text-primary);
 }
 
-/* Additional poker-style elements */
 .lead-text {
     font-family: 'Oswald', sans-serif;
     font-weight: 400;

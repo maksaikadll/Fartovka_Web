@@ -1,10 +1,8 @@
-// Navigation
 const navbar = document.querySelector('.navbar');
 const hamburger = document.querySelector('.hamburger');
 const navMenu = document.querySelector('.nav-menu');
 const navLinks = document.querySelectorAll('.nav-link');
 
-// Navbar scroll effect
 window.addEventListener('scroll', () => {
     if (window.scrollY > 50) {
         navbar.classList.add('scrolled');
@@ -13,13 +11,11 @@ window.addEventListener('scroll', () => {
     }
 });
 
-// Mobile menu toggle
 hamburger.addEventListener('click', () => {
     navMenu.classList.toggle('active');
     hamburger.classList.toggle('active');
 });
 
-// Close mobile menu when clicking on a link
 navLinks.forEach(link => {
     link.addEventListener('click', () => {
         navMenu.classList.remove('active');
@@ -27,7 +23,6 @@ navLinks.forEach(link => {
     });
 });
 
-// Smooth scroll for navigation links
 navLinks.forEach(link => {
     link.addEventListener('click', (e) => {
         e.preventDefault();
@@ -44,7 +39,6 @@ navLinks.forEach(link => {
     });
 });
 
-// Rules tabs functionality
 const tabButtons = document.querySelectorAll('.tab-btn');
 const rulePanels = document.querySelectorAll('.rules-panel');
 
@@ -52,17 +46,14 @@ tabButtons.forEach(button => {
     button.addEventListener('click', () => {
         const targetTab = button.getAttribute('data-tab');
         
-        // Remove active class from all buttons and panels
         tabButtons.forEach(btn => btn.classList.remove('active'));
         rulePanels.forEach(panel => panel.classList.remove('active'));
         
-        // Add active class to clicked button and corresponding panel
         button.classList.add('active');
         document.getElementById(targetTab).classList.add('active');
     });
 });
 
-// Intersection Observer for fade-in animations
 const observerOptions = {
     threshold: 0.1,
     rootMargin: '0px 0px -50px 0px'
@@ -77,7 +68,6 @@ const observer = new IntersectionObserver((entries) => {
     });
 }, observerOptions);
 
-// Observe elements for animation
 const animateElements = document.querySelectorAll('.feature-card, .card-type, .stat-item, .step-item');
 animateElements.forEach(el => {
     el.style.opacity = '0';
@@ -86,7 +76,6 @@ animateElements.forEach(el => {
     observer.observe(el);
 });
 
-// Parallax effect for hero section
 window.addEventListener('scroll', () => {
     const scrolled = window.pageYOffset;
     const hero = document.querySelector('.hero');
@@ -98,7 +87,6 @@ window.addEventListener('scroll', () => {
     }
 });
 
-// Add hover effect to buttons
 const buttons = document.querySelectorAll('.btn');
 buttons.forEach(button => {
     button.addEventListener('mouseenter', function() {
@@ -110,7 +98,6 @@ buttons.forEach(button => {
     });
 });
 
-// Counter animation for stats
 const animateCounter = (element, target, duration = 2000) => {
     let start = 0;
     const increment = target / (duration / 16);
@@ -125,7 +112,6 @@ const animateCounter = (element, target, duration = 2000) => {
     }, 16);
 };
 
-// Observe stats for counter animation
 const statNumbers = document.querySelectorAll('.stat-number');
 const statsObserver = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
@@ -145,7 +131,6 @@ statNumbers.forEach(stat => {
     statsObserver.observe(stat);
 });
 
-// Add ripple effect to buttons
 buttons.forEach(button => {
     button.addEventListener('click', function(e) {
         const ripple = document.createElement('span');
@@ -167,7 +152,6 @@ buttons.forEach(button => {
     });
 });
 
-// Add CSS for ripple effect
 const style = document.createElement('style');
 style.textContent = `
     .btn {
@@ -193,7 +177,6 @@ style.textContent = `
 `;
 document.head.appendChild(style);
 
-// Active section highlighting in navigation
 const sections = document.querySelectorAll('section[id]');
 
 window.addEventListener('scroll', () => {
@@ -214,7 +197,6 @@ window.addEventListener('scroll', () => {
     });
 });
 
-// Add active state style
 const activeStyle = document.createElement('style');
 activeStyle.textContent = `
     .nav-link.active {
@@ -227,7 +209,6 @@ activeStyle.textContent = `
 `;
 document.head.appendChild(activeStyle);
 
-// Lazy loading for images (if any are added later)
 if ('IntersectionObserver' in window) {
     const imageObserver = new IntersectionObserver((entries, observer) => {
         entries.forEach(entry => {
@@ -247,19 +228,17 @@ if ('IntersectionObserver' in window) {
     });
 }
 
-// Console message
 console.log('%cФАРТОВКА', 'font-size: 50px; font-weight: bold; color: #00BFFF; text-shadow: 2px 2px 4px rgba(0,0,0,0.5);');
 console.log('%cКарточная игра с магией и стратегией', 'font-size: 16px; color: #E8F4F8;');
 
-// Tilt effect for cards (Steam-like)
 const tiltCards = document.querySelectorAll('.feature-card, .card-type, .benefit-item, .stat-item, .step-item');
 tiltCards.forEach(card => {
     const handleMove = (e) => {
         const rect = card.getBoundingClientRect();
         const x = (e.clientX - rect.left) / rect.width;
         const y = (e.clientY - rect.top) / rect.height;
-        const rotateY = (x - 0.5) * 18; // left/right
-        const rotateX = (0.5 - y) * 18; // up/down
+        const rotateY = (x - 0.5) * 18; 
+        const rotateX = (0.5 - y) * 18; 
         card.style.transform = `perspective(900px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.08)`;
         card.style.boxShadow = '0 25px 60px rgba(0, 191, 255, 0.32)';
     };
