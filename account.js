@@ -1,11 +1,8 @@
-// Account page logic (registration + list)
-// Stores data at: http://web4.informatics.ru:82/api/0b7f6114de5a56625f4a9a0c19e57123
 
 const navbar = document.querySelector('.navbar');
 const hamburger = document.querySelector('.hamburger');
 const navMenu = document.querySelector('.nav-menu');
 
-// Basic navbar interactions (copied from main, trimmed)
 window.addEventListener('scroll', () => {
     if (!navbar) return;
     if (window.scrollY > 50) navbar.classList.add('scrolled');
@@ -26,9 +23,6 @@ if (hamburger && navMenu) {
     });
 }
 
-// -------------------------------
-// Account API (user registration)
-// -------------------------------
 
 const ACCOUNT_API_URL = 'http://web4.informatics.ru:82/api/0b7f6114de5a56625f4a9a0c19e57123';
 
@@ -36,8 +30,6 @@ const accountForm = document.getElementById('account-form');
 const accountNicknameInput = document.getElementById('account-nickname');
 const accountEmailInput = document.getElementById('account-email');
 const accountMessage = document.getElementById('account-message');
-
-// My Account (selection based on client IP)
 const myAccountCard = document.getElementById('my-account-card');
 const profileAvatar = document.getElementById('profile-avatar');
 const profileName = document.getElementById('profile-name');
@@ -111,7 +103,6 @@ const loadAccountData = async () => {
         const data = await response.json();
         accountUsers = (data && Array.isArray(data.users)) ? data.users : [];
 
-        // auto-select my account by IP (if present)
         let myAcc = null;
         if (currentIp && accountUsers.length) {
             const sameIp = accountUsers.filter(u => u.ip && u.ip === currentIp);
@@ -161,7 +152,6 @@ if (accountForm) {
         }
 
         try {
-            // Ensure we know client IP before saving
             await resolveClientIp();
 
             if (!currentIp) {
@@ -169,10 +159,8 @@ if (accountForm) {
                 return;
             }
 
-            // Always re-load latest state before appending (best-effort, no locking)
             await loadAccountData();
 
-        // Only one account per IP
         if (accountUsers.some((user) => user.ip === currentIp)) {
             setAccountMessage('На этот IP уже создан аккаунт. Сначала удалите существующий.', 'error');
             return;
@@ -205,13 +193,10 @@ if (accountForm) {
             accountUsers.push(newUser);
             await saveAccountData();
 
-            // After creation: redirect to dashboard
             setAccountMessage('Аккаунт успешно создан! Перенаправление в личный кабинет...', 'success');
 
-            // Save new user data to localStorage for dashboard access
             localStorage.setItem('currentUser', JSON.stringify(newUser));
 
-            // Redirect after a short delay to show the message
             setTimeout(() => {
                 window.location.href = 'dashboard.html';
             }, 1500);
@@ -249,7 +234,6 @@ if (profileDeleteBtn) {
                 return;
             }
 
-            // Find the account to delete by matching IP
             const accountToDelete = accountUsers.find((user) => user.ip === currentIp);
 
             if (!accountToDelete) {
@@ -257,7 +241,6 @@ if (profileDeleteBtn) {
                 return;
             }
 
-            // Remove only the specific account
             accountUsers = accountUsers.filter((user) => user.id !== accountToDelete.id);
 
             await saveAccountData();

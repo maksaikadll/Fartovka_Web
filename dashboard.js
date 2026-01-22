@@ -1,11 +1,7 @@
-// Dashboard page logic (profile editing, friends, stats)
-// Stores data at: http://web4.informatics.ru:82/api/0b7f6114de5a56625f4a9a0c19e57123
-
 const navbar = document.querySelector('.navbar');
 const hamburger = document.querySelector('.hamburger');
 const navMenu = document.querySelector('.nav-menu');
 
-// Basic navbar interactions
 window.addEventListener('scroll', () => {
     if (!navbar) return;
     if (window.scrollY > 50) navbar.classList.add('scrolled');
@@ -26,16 +22,11 @@ if (hamburger && navMenu) {
     });
 }
 
-// -------------------------------
-// Dashboard API & State
-// -------------------------------
-
 const DASHBOARD_API_URL = 'http://web4.informatics.ru:82/api/0b7f6114de5a56625f4a9a0c19e57123';
 
 let currentUser = null;
 let allUsers = [];
 
-// Tab switching
 const tabButtons = document.querySelectorAll('.tab-btn');
 const dashboardPanels = document.querySelectorAll('.dashboard-panel');
 
@@ -51,7 +42,6 @@ tabButtons.forEach(button => {
     });
 });
 
-// Utility functions
 const getInitials = (nickname) => {
     const s = (nickname || '').trim();
     if (!s) return '?';
@@ -66,12 +56,10 @@ const formatDateRu = (iso) => {
 };
 
 const showMessage = (text, type = 'info') => {
-    // Simple notification - could be enhanced
     alert(text);
     console.log(`[${type.toUpperCase()}] ${text}`);
 };
 
-// Load current user from localStorage
 const loadCurrentUser = () => {
     const userData = localStorage.getItem('currentUser');
     if (!userData) {
@@ -92,7 +80,6 @@ const loadCurrentUser = () => {
     }
 };
 
-// Load all users from API
 const loadAllUsers = async () => {
     try {
         const response = await fetch(DASHBOARD_API_URL);
@@ -107,19 +94,15 @@ const loadAllUsers = async () => {
     }
 };
 
-// Save updated user data
 const saveUserData = async (updatedUser) => {
     try {
-        // Load current data
         await loadAllUsers();
 
-        // Find and update user
         const userIndex = allUsers.findIndex(u => u.id === updatedUser.id);
         if (userIndex === -1) throw new Error('Пользователь не найден');
 
         allUsers[userIndex] = updatedUser;
 
-        // Save to API
         const response = await fetch(DASHBOARD_API_URL, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -128,7 +111,6 @@ const saveUserData = async (updatedUser) => {
 
         if (!response.ok) throw new Error('Не удалось сохранить данные');
 
-        // Update localStorage
         localStorage.setItem('currentUser', JSON.stringify(updatedUser));
         currentUser = updatedUser;
 
@@ -138,10 +120,6 @@ const saveUserData = async (updatedUser) => {
         throw error;
     }
 };
-
-// -------------------------------
-// Profile Tab
-// -------------------------------
 
 const renderProfile = () => {
     if (!currentUser) return;
@@ -159,7 +137,6 @@ const renderProfile = () => {
     if (id) id.textContent = String(currentUser.id ?? '—');
 };
 
-// Edit Profile
 const editProfileBtn = document.getElementById('edit-profile-btn');
 const editForm = document.getElementById('edit-profile-form');
 const editNickname = document.getElementById('edit-nickname');
@@ -196,10 +173,8 @@ if (saveProfileBtn) {
         }
 
         try {
-            // Load current users data to check nickname uniqueness
-            await loadAllUsers();
 
-            // Check if nickname is already taken by another user (case-insensitive)
+            await loadAllUsers();
             const nicknameTaken = allUsers.some(
                 (user) => user.id !== currentUser.id &&
                          user.nickname &&
@@ -228,7 +203,6 @@ if (saveProfileBtn) {
     });
 }
 
-// Profile Actions
 const copyIdBtn = document.getElementById('copy-id-btn');
 const deleteAccountBtn = document.getElementById('delete-account-btn');
 const logoutBtn = document.getElementById('logout-btn');
@@ -282,10 +256,6 @@ if (logoutBtn) {
     });
 }
 
-// -------------------------------
-// Friends Tab
-// -------------------------------
-
 const renderFriends = () => {
     const friendsList = document.getElementById('friends-list');
     if (!friendsList || !currentUser) return;
@@ -322,7 +292,6 @@ const renderFriends = () => {
         friendsList.appendChild(friendItem);
     });
 
-    // Add event listeners for remove buttons
     document.querySelectorAll('.remove-friend-btn').forEach(btn => {
         btn.addEventListener('click', async (e) => {
             const nickname = e.target.getAttribute('data-nickname');
@@ -342,7 +311,6 @@ const renderFriends = () => {
     });
 };
 
-// Add Friend
 const addFriendBtn = document.getElementById('add-friend-btn');
 const addFriendForm = document.getElementById('add-friend-form');
 const friendNickname = document.getElementById('friend-nickname');
@@ -377,7 +345,6 @@ if (sendFriendRequestBtn) {
             return;
         }
 
-        // Check if user exists
         await loadAllUsers();
         const friendExists = allUsers.some(u => u.nickname === nickname);
         if (!friendExists) {
@@ -385,7 +352,6 @@ if (sendFriendRequestBtn) {
             return;
         }
 
-        // Check if already friends
         const alreadyFriends = currentUser.friends?.some(f => f.nickname === nickname);
         if (alreadyFriends) {
             showMessage('Этот пользователь уже в друзьях', 'error');
@@ -415,9 +381,6 @@ if (sendFriendRequestBtn) {
     });
 }
 
-// -------------------------------
-// Stats Tab
-// -------------------------------
 
 const renderStats = () => {
     if (!currentUser || !currentUser.stats) return;
@@ -440,10 +403,6 @@ const renderStats = () => {
     }
 };
 
-// -------------------------------
-// Initialize Dashboard
-// -------------------------------
-
 const initDashboard = async () => {
     if (!loadCurrentUser()) return;
 
@@ -452,5 +411,4 @@ const initDashboard = async () => {
     renderStats();
 };
 
-// Start the dashboard
 initDashboard();
