@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Фартовка — Личный кабинет</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Oswald:wght@300;400;500;600;700&family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <span class="logo-text">ФАРТОВКА</span>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="index.html#home" class="nav-link">Главная</a></li>
+                <li><a href="index.html#about" class="nav-link">Об игре</a></li>
+                <li><a href="index.html#features" class="nav-link">Особенности</a></li>
+                <li><a href="index.html#rules" class="nav-link">Правила</a></li>
+                <li><a href="index.html#download" class="nav-link">Скачать</a></li>
+                <li class="nav-item-account"><a href="account.html" class="nav-link">Аккаунт</a></li>
+                <li><a href="dashboard.html" class="nav-link active">Личный кабинет</a></li>
+            </ul>
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <section id="dashboard" class="account" style="padding-top: 140px;">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">ЛИЧНЫЙ КАБИНЕТ</h2>
+                <div class="title-underline"></div>
+            </div>
+
+            <!-- Dashboard Tabs -->
+            <div class="dashboard-tabs">
+                <button class="tab-btn active" data-tab="profile">Профиль</button>
+                <button class="tab-btn" data-tab="friends">Друзья</button>
+                <button class="tab-btn" data-tab="stats">Статистика</button>
+            </div>
+
+            <!-- Profile Tab -->
+            <div class="dashboard-panel active" id="profile">
+                <div class="dashboard-grid">
+                    <div class="profile-card-large">
+                        <div class="profile-header">
+                            <div class="profile-avatar-large" id="profile-avatar-large">?</div>
+                            <div class="profile-info-large">
+                                <h3 id="profile-nickname-large">—</h3>
+                                <p id="profile-email-large">—</p>
+                                <div class="profile-meta">
+                                    <span>Создан: <span id="profile-created-large">—</span></span>
+                                    <span>ID: <span id="profile-id-large">—</span></span>
+                                </div>
+                            </div>
+                            <button class="btn btn-secondary" id="edit-profile-btn">Редактировать</button>
+                        </div>
+
+                        <!-- Edit Profile Form (hidden by default) -->
+                        <div class="edit-profile-form" id="edit-profile-form" style="display: none;">
+                            <h4>Редактировать профиль</h4>
+                            <div class="form-group">
+                                <label for="edit-nickname">Никнейм</label>
+                                <input type="text" id="edit-nickname" placeholder="Новый никнейм">
+                            </div>
+                            <div class="form-group">
+                                <label for="edit-email">Email</label>
+                                <input type="email" id="edit-email" placeholder="Новый email">
+                            </div>
+                            <div class="form-actions">
+                                <button class="btn btn-primary" id="save-profile-btn">Сохранить</button>
+                                <button class="btn btn-secondary" id="cancel-edit-btn">Отмена</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="profile-actions-panel">
+                        <button class="btn btn-secondary" id="copy-id-btn">Копировать ID</button>
+                        <button class="btn btn-danger" id="delete-account-btn">Удалить аккаунт</button>
+                        <button class="btn btn-secondary" id="logout-btn">Выйти</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Friends Tab -->
+            <div class="dashboard-panel" id="friends">
+                <div class="friends-section">
+                    <div class="friends-header">
+                        <h3>Мои друзья</h3>
+                        <button class="btn btn-primary" id="add-friend-btn">Добавить друга</button>
+                    </div>
+
+                    <!-- Add Friend Form (hidden by default) -->
+                    <div class="add-friend-form" id="add-friend-form" style="display: none;">
+                        <div class="form-group">
+                            <label for="friend-nickname">Никнейм друга</label>
+                            <input type="text" id="friend-nickname" placeholder="Введите никнейм">
+                        </div>
+                        <div class="form-actions">
+                            <button class="btn btn-primary" id="send-friend-request-btn">Отправить запрос</button>
+                            <button class="btn btn-secondary" id="cancel-friend-request-btn">Отмена</button>
+                        </div>
+                    </div>
+
+                    <div class="friends-list" id="friends-list">
+                        <div class="friend-item empty">
+                            <p>У вас пока нет друзей. Добавьте первого!</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Stats Tab -->
+            <div class="dashboard-panel" id="stats">
+                <div class="stats-section">
+                    <h3>Игровая статистика</h3>
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-icon">🎮</div>
+                            <div class="stat-info">
+                                <div class="stat-number" id="games-played">0</div>
+                                <div class="stat-label">Игр сыграно</div>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">🏆</div>
+                            <div class="stat-info">
+                                <div class="stat-number" id="wins">0</div>
+                                <div class="stat-label">Побед</div>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">❌</div>
+                            <div class="stat-info">
+                                <div class="stat-number" id="losses">0</div>
+                                <div class="stat-label">Поражений</div>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">🤝</div>
+                            <div class="stat-info">
+                                <div class="stat-number" id="draws">0</div>
+                                <div class="stat-label">Ничьих</div>
+                            </div>
+                        </div>
+                        <div class="stat-card win-rate">
+                            <div class="stat-icon">📊</div>
+                            <div class="stat-info">
+                                <div class="stat-number" id="win-rate">0%</div>
+                                <div class="stat-label">Процент побед</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>ФАРТОВКА</h4>
+                    <p>Карточная игра с магией и стратегией</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Быстрые ссылки</h4>
+                    <ul class="footer-links">
+                        <li><a href="index.html#home">Главная</a></li>
+                        <li><a href="index.html#about">Об игре</a></li>
+                        <li><a href="index.html#features">Особенности</a></li>
+                        <li><a href="index.html#rules">Правила</a></li>
+                        <li><a href="account.html">Аккаунт</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Документация</h4>
+                    <ul class="footer-links">
+                        <li><a href="../Fartovka/README.md">README</a></li>
+                        <li><a href="../Fartovka/rules.md">Правила</a></li>
+                        <li><a href="../Fartovka/INSTALL.md">Установка</a></li>
+                        <li><a href="../Fartovka/FRIENDS_GUIDE.md">Система друзей</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 Фартовка. Все права защищены.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="dashboard.js"></script>
+</body>
+</html>

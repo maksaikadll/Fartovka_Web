@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Фартовка — Аккаунт</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Oswald:wght@300;400;500;600;700&family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <span class="logo-text">ФАРТОВКА</span>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="index.html#home" class="nav-link">Главная</a></li>
+                <li><a href="index.html#about" class="nav-link">Об игре</a></li>
+                <li><a href="index.html#features" class="nav-link">Особенности</a></li>
+                <li><a href="index.html#rules" class="nav-link">Правила</a></li>
+                <li><a href="index.html#download" class="nav-link">Скачать</a></li>
+                <li class="nav-item-account"><a href="account.html" class="nav-link active">Аккаунт</a></li>
+                <li><a href="dashboard.html" class="nav-link">Личный кабинет</a></li>
+            </ul>
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <section id="account" class="account" style="padding-top: 140px;">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">АККАУНТ</h2>
+                <div class="title-underline"></div>
+            </div>
+            <div class="account-grid">
+                <form id="account-form" class="account-form">
+                    <h3 class="account-title">Создать аккаунт</h3>
+                    <p class="account-subtitle">
+                        Создайте простой игровой аккаунт для Фартовки. Данные будут сохранены на удалённом сервере.
+                    </p>
+                    <div class="form-group">
+                        <label for="account-nickname">Никнейм</label>
+                        <input type="text" id="account-nickname" name="nickname" placeholder="Например, FartovkaMage" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="account-email">Email (опционально)</label>
+                        <input type="email" id="account-email" name="email" placeholder="you@example.com">
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-large account-submit-btn">
+                        Создать аккаунт
+                    </button>
+                    <p id="account-message" class="account-message"></p>
+                </form>
+
+                <div id="my-account-card" class="account-info account-profile" style="display: none;">
+                    <h3 class="account-title">Мой аккаунт</h3>
+                    <p class="account-subtitle">
+                        Это ваш локально выбранный аккаунт на этом устройстве
+                    </p>
+                    <div class="profile-card">
+                        <div class="profile-top">
+                            <div class="profile-avatar" id="profile-avatar">?</div>
+                            <div class="profile-meta">
+                                <div class="profile-name" id="profile-name">—</div>
+                                <div class="profile-sub" id="profile-sub">—</div>
+                            </div>
+                        </div>
+                        <div class="profile-details">
+                            <div class="profile-row">
+                                <span class="profile-k">Email</span>
+                                <span class="profile-v" id="profile-email">—</span>
+                            </div>
+                            <div class="profile-row">
+                                <span class="profile-k">Создан</span>
+                                <span class="profile-v" id="profile-created">—</span>
+                            </div>
+                            <div class="profile-row">
+                                <span class="profile-k">ID</span>
+                                <span class="profile-v" id="profile-id">—</span>
+                            </div>
+                        </div>
+                        <div class="profile-actions">
+                            <button type="button" class="btn btn-secondary profile-btn" id="profile-copy-id">
+                                Скопировать ID
+                            </button>
+                            <button type="button" class="btn btn-secondary profile-btn" id="profile-delete">
+                                Удалить аккаунт
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>ФАРТОВКА</h4>
+                    <p>Карточная игра с магией и стратегией</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Быстрые ссылки</h4>
+                    <ul class="footer-links">
+                        <li><a href="index.html#home">Главная</a></li>
+                        <li><a href="index.html#about">Об игре</a></li>
+                        <li><a href="index.html#features">Особенности</a></li>
+                        <li><a href="index.html#rules">Правила</a></li>
+                        <li><a href="account.html">Аккаунт</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Документация</h4>
+                    <ul class="footer-links">
+                        <li><a href="../Fartovka/README.md">README</a></li>
+                        <li><a href="../Fartovka/rules.md">Правила</a></li>
+                        <li><a href="../Fartovka/INSTALL.md">Установка</a></li>
+                        <li><a href="../Fartovka/FRIENDS_GUIDE.md">Система друзей</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 Фартовка. Все права защищены.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="account.js"></script>
+</body>
+</html>
+

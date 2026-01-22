@@ -25,8 +25,13 @@ navLinks.forEach(link => {
 
 navLinks.forEach(link => {
     link.addEventListener('click', (e) => {
-        e.preventDefault();
         const targetId = link.getAttribute('href');
+        // Allow normal navigation for external links (e.g. account.html)
+        if (!targetId || !targetId.startsWith('#')) {
+            return;
+        }
+
+        e.preventDefault();
         const targetSection = document.querySelector(targetId);
         
         if (targetSection) {
