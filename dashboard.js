@@ -196,6 +196,21 @@ if (saveProfileBtn) {
         }
 
         try {
+            // Load current users data to check nickname uniqueness
+            await loadAllUsers();
+
+            // Check if nickname is already taken by another user (case-insensitive)
+            const nicknameTaken = allUsers.some(
+                (user) => user.id !== currentUser.id &&
+                         user.nickname &&
+                         user.nickname.toLowerCase() === newNickname.toLowerCase()
+            );
+
+            if (nicknameTaken) {
+                showMessage('Этот никнейм уже занят другим игроком', 'error');
+                return;
+            }
+
             const updatedUser = {
                 ...currentUser,
                 nickname: newNickname,

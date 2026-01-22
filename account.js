@@ -164,11 +164,16 @@ if (accountForm) {
             // Ensure we know client IP before saving
             await resolveClientIp();
 
+            if (!currentIp) {
+                setAccountMessage('Не удалось определить ваш IP адрес. Попробуйте позже.', 'error');
+                return;
+            }
+
             // Always re-load latest state before appending (best-effort, no locking)
             await loadAccountData();
 
         // Only one account per IP
-        if (currentIp && accountUsers.some((user) => user.ip === currentIp)) {
+        if (accountUsers.some((user) => user.ip === currentIp)) {
             setAccountMessage('На этот IP уже создан аккаунт. Сначала удалите существующий.', 'error');
             return;
         }
@@ -244,13 +249,16 @@ if (profileDeleteBtn) {
                 return;
             }
 
-            const beforeCount = accountUsers.length;
-            accountUsers = accountUsers.filter((user) => !(user.ip === currentIp));
+            // Find the account to delete by matching IP
+            const accountToDelete = accountUsers.find((user) => user.ip === currentIp);
 
-            if (accountUsers.length === beforeCount) {
+            if (!accountToDelete) {
                 setAccountMessage('Аккаунт для этого IP не найден.', 'error');
                 return;
             }
+
+            // Remove only the specific account
+            accountUsers = accountUsers.filter((user) => user.id !== accountToDelete.id);
 
             await saveAccountData();
             renderMyAccount(null);
