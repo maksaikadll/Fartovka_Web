@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fartovka - OAuth Callback</title>
+    <style>
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: linear-gradient(135deg, #0A1A2E 0%, #1A2F4A 100%);
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            text-align: center;
+        }
+        .container {
+            background: rgba(26, 47, 74, 0.9);
+            padding: 2rem;
+            border-radius: 16px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            max-width: 400px;
+        }
+        .loading {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: #00bfff;
+            animation: spin 1s ease-in-out infinite;
+            margin-bottom: 1rem;
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        .success { color: #4CAF50; }
+        .error { color: #f44336; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div id="loading" class="loading"></div>
+        <h2 id="status">Обработка авторизации...</h2>
+        <p id="message">Пожалуйста, подождите</p>
+    </div>
+
+    <script>
+        // Функция для генерации уникального никнейма
+        function generateUniqueNickname(provider, userData) {
+            const baseName = userData.login || userData.username || userData.name ||
+                            userData.global_name || `${provider}_user_${userData.id || Date.now()}`;
+
+            let nickname = baseName.replace(/[^a-zA-Z0-9_]/g, '_').toLowerCase();
+
+            // Проверяем уникальность (в реальности здесь был бы запрос к серверу)
+            let counter = 1;
+            const originalNickname = nickname;
+            while (localStorage.getItem(`user_${nickname}`)) {
+                nickname = `${originalNickname}_${counter}`;
+                counter++;
+            }
+
+            return nickname;
+        }
+
+        // Имитация создания пользователя OAuth
+        function createOAuthUser(provider, userData) {
+            const nickname = generateUniqueNickname(provider, userData);
+
+            const user = {
+                id: Date.now(),
+                nickname: nickname,
+                email: userData.email || null,
+                oauthProvider: provider,
+                oauthId: userData.id || Date.now().toString(),
+                avatar: getAvatarUrl(provider, userData),
+                createdAt: new Date().toISOString(),
+                friends: [],
+                stats: {
+                    gamesPlayed: 0,
+                    wins: 0,
+                    losses: 0,
+                    draws: 0,
+                    winRate: 0
+                }
+            };
+
+            // Сохраняем в localStorage (в реальности - на сервере)
+            localStorage.setItem('currentUser', JSON.stringify(user));
+            localStorage.setItem('isLoggedIn', 'true');
+
+            return user;
+        }
+
+        function getAvatarUrl(provider, data) {
+            switch (provider) {
+                case 'github':
+                    return data.avatar_url;
+                case 'discord':
+                    return data.avatar
+                        ? `https://cdn.discordapp.com/avatars/${data.id}/${data.avatar}.png`
+                        : null;
+                case 'google':
+                    return data.picture;
+                default:
+                    return null;
+            }
+        }
+
+        // Обработка OAuth callback
+        async function handleCallback() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const code = urlParams.get('code');
+            const state = urlParams.get('state');
+            const error = urlParams.get('error');
+
+            const storedState = localStorage.getItem('oauth_state');
+            const provider = localStorage.getItem('oauth_provider');
+
+            // Очищаем временные данные
+            localStorage.removeItem('oauth_state');
+            localStorage.removeItem('oauth_provider');
+
+            const statusEl = document.getElementById('status');
+            const messageEl = document.getElementById('message');
+            const loadingEl = document.getElementById('loading');
+
+            if (error) {
+                statusEl.textContent = 'Ошибка авторизации';
+                statusEl.className = 'error';
+                messageEl.textContent = `Ошибка: ${error}`;
+                loadingEl.style.display = 'none';
+                return;
+            }
+
+            if (!code) {
+                statusEl.textContent = 'Ошибка авторизации';
+                statusEl.className = 'error';
+                messageEl.textContent = 'Не получен код авторизации';
+                loadingEl.style.display = 'none';
+                return;
+            }
+
+            if (state !== storedState) {
+                statusEl.textContent = 'Ошибка безопасности';
+                statusEl.className = 'error';
+                messageEl.textContent = 'Неверное состояние OAuth';
+                loadingEl.style.display = 'none';
+                return;
+            }
+
+            try {
+                // В реальности здесь был бы запрос к вашему серверу для обмена кода на токен
+                // Но без сервера мы просто имитируем успешную авторизацию
+
+                // Имитируем получение данных пользователя
+                const mockUserData = {
+                    id: Date.now().toString(),
+                    login: `${provider}_user_${Math.random().toString(36).substr(2, 6)}`,
+                    email: `user@${provider}.com`,
+                    name: `User from ${provider}`,
+                    avatar_url: null,
+                    picture: null
+                };
+
+                // Создаем пользователя
+                const user = createOAuthUser(provider, mockUserData);
+
+                statusEl.textContent = 'Авторизация успешна!';
+                statusEl.className = 'success';
+                messageEl.textContent = `Добро пожаловать, ${user.nickname}! Перенаправление...`;
+
+                // Перенаправляем в личный кабинет через 2 секунды
+                setTimeout(() => {
+                    window.location.href = '/dashboard.html';
+                }, 2000);
+
+            } catch (err) {
+                console.error('OAuth callback error:', err);
+                statusEl.textContent = 'Ошибка авторизации';
+                statusEl.className = 'error';
+                messageEl.textContent = 'Не удалось обработать авторизацию';
+                loadingEl.style.display = 'none';
+            }
+        }
+
+        // Запускаем обработку при загрузке страницы
+        document.addEventListener('DOMContentLoaded', handleCallback);
+    </script>
+</body>
+</html>

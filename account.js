@@ -364,7 +364,14 @@ const handleOAuthLogin = (provider) => {
 
     // Небольшая задержка для показа сообщения
     setTimeout(() => {
-        window.location.href = `/auth/${provider}`;
+        if (typeof redirectToOAuth === 'function') {
+            redirectToOAuth(provider);
+        } else {
+            // Fallback: показываем инструкции
+            setAccountMessage(loginMessage,
+                `Для ${config.name} OAuth нужен сервер. Используйте имитацию.`,
+                'error');
+        }
     }, 500);
 };
 

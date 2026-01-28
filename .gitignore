@@ -154,5 +154,6 @@ obj/
 .env.local
 .env.production
 
-# OAuth configuration example
+# OAuth configuration examples
 oauth-example.js
+oauth-simple.js
