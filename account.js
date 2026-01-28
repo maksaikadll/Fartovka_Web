@@ -105,33 +105,24 @@ if (accountTabs) {
             accountTabs.forEach(t => t.classList.remove('active'));
             tab.classList.add('active');
 
-            const currentForm = document.querySelector('.account-form[style*="display: block"]') || registerForm;
-            const newForm = targetForm === 'register' ? registerForm : loginForm;
-
-            if (currentForm && currentForm !== newForm) {
-                currentForm.classList.remove('active');
-                currentForm.classList.add('fade-out');
-                setTimeout(() => {
-                    currentForm.classList.remove('fade-out');
-                    currentForm.style.opacity = '0';
-                    currentForm.style.transform = 'translateY(-20px)';
-                }, 600);
-            }
-
-            setTimeout(() => {
-                if (newForm) {
-                    newForm.classList.add('active');
-                    newForm.style.opacity = '0';
-                    newForm.style.transform = 'translateY(20px)';
-
-                    requestAnimationFrame(() => {
-                        newForm.classList.add('fade-in');
-                        setTimeout(() => {
-                            newForm.classList.remove('fade-in');
-                        }, 600);
-                    });
+            const allForms = document.querySelectorAll('.account-form');
+            allForms.forEach(form => {
+                if (form.id === `${targetForm}-form`) {
+                    form.classList.add('active');
+                    form.style.display = 'block';
+                    form.classList.add('fade-in');
+                    setTimeout(() => {
+                        form.classList.remove('fade-in');
+                    }, 600);
+                } else {
+                    form.classList.remove('active');
+                    form.classList.add('fade-out');
+                    setTimeout(() => {
+                        form.style.display = 'none';
+                        form.classList.remove('fade-out');
+                    }, 600);
                 }
-            }, currentForm && currentForm !== newForm ? 350 : 50);
+            });
         });
     });
 }
@@ -317,6 +308,42 @@ if (loginForm) {
             console.error('Ошибка при входе:', error);
             setAccountMessage(loginMessage, 'Не удалось выполнить вход. Попробуйте позже.', 'error');
         }
+    });
+}
+
+const githubLoginBtn = document.getElementById('github-login-btn');
+if (githubLoginBtn) {
+    githubLoginBtn.addEventListener('click', () => {
+        setAccountMessage(loginMessage, 'Подключение к GitHub...', 'info');
+
+        setTimeout(() => {
+            const mockGithubUser = {
+                id: Date.now(),
+                nickname: 'github_user_' + Math.random().toString(36).substr(2, 9),
+                email: 'user@github.com',
+                password: hashPassword('github_oauth_token_' + Date.now()),
+                createdAt: new Date().toISOString(),
+                ip: null,
+                friends: [],
+                stats: {
+                    gamesPlayed: 0,
+                    wins: 0,
+                    losses: 0,
+                    draws: 0,
+                    winRate: 0
+                },
+                githubLogin: true
+            };
+
+            localStorage.setItem('currentUser', JSON.stringify(mockGithubUser));
+            localStorage.setItem('isLoggedIn', 'true');
+
+            setAccountMessage(loginMessage, 'Вход через GitHub выполнен успешно! Перенаправление в личный кабинет...', 'success');
+
+            setTimeout(() => {
+                window.location.href = 'dashboard.html';
+            }, 1500);
+        }, 2000);
     });
 }
 

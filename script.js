@@ -259,10 +259,11 @@ tiltCards.forEach(card => {
 
 const checkAuthentication = () => {
     const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+    const hasCurrentUser = !!localStorage.getItem('currentUser');
     const dashboardNavItem = document.getElementById('dashboard-nav-item');
 
     if (dashboardNavItem) {
-        dashboardNavItem.style.display = isLoggedIn ? '' : 'none';
+        dashboardNavItem.style.display = (isLoggedIn && hasCurrentUser) ? '' : 'none';
     }
 };
 
