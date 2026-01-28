@@ -26,10 +26,21 @@ if (hamburger && navMenu) {
 
 const ACCOUNT_API_URL = 'http://web4.informatics.ru:82/api/0b7f6114de5a56625f4a9a0c19e57123';
 
-const accountForm = document.getElementById('account-form');
-const accountNicknameInput = document.getElementById('account-nickname');
-const accountEmailInput = document.getElementById('account-email');
-const accountMessage = document.getElementById('account-message');
+// Account tabs
+const accountTabs = document.querySelectorAll('.account-tabs .tab-btn');
+const registerForm = document.getElementById('register-form');
+const loginForm = document.getElementById('login-form');
+
+// Registration form elements
+const registerNicknameInput = document.getElementById('register-nickname');
+const registerEmailInput = document.getElementById('register-email');
+const registerPasswordInput = document.getElementById('register-password');
+const registerMessage = document.getElementById('register-message');
+
+// Login form elements
+const loginNicknameInput = document.getElementById('login-nickname');
+const loginPasswordInput = document.getElementById('login-password');
+const loginMessage = document.getElementById('login-message');
 const myAccountCard = document.getElementById('my-account-card');
 const profileAvatar = document.getElementById('profile-avatar');
 const profileName = document.getElementById('profile-name');
@@ -87,12 +98,46 @@ const renderMyAccount = (user) => {
     if (profileId) profileId.textContent = String(user.id ?? '—');
 };
 
-const setAccountMessage = (text, type = 'info') => {
-    if (!accountMessage) return;
-    accountMessage.textContent = text;
-    accountMessage.classList.remove('account-message--success', 'account-message--error');
-    if (type === 'success') accountMessage.classList.add('account-message--success');
-    if (type === 'error') accountMessage.classList.add('account-message--error');
+// Tab switching logic
+if (accountTabs) {
+    accountTabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+            const targetForm = tab.getAttribute('data-form');
+
+            // Remove active class from all tabs
+            accountTabs.forEach(t => t.classList.remove('active'));
+            tab.classList.add('active');
+
+            // Hide all forms and show target form
+            if (registerForm) registerForm.style.display = 'none';
+            if (loginForm) loginForm.style.display = 'none';
+
+            if (targetForm === 'register' && registerForm) {
+                registerForm.style.display = 'block';
+            } else if (targetForm === 'login' && loginForm) {
+                loginForm.style.display = 'block';
+            }
+        });
+    });
+}
+
+// Simple hash function for passwords (not secure for production)
+const hashPassword = (password) => {
+    let hash = 0;
+    for (let i = 0; i < password.length; i++) {
+        const char = password.charCodeAt(i);
+        hash = ((hash << 5) - hash) + char;
+        hash = hash & hash; // Convert to 32-bit integer
+    }
+    return hash.toString();
+};
+
+const setAccountMessage = (messageElement, text, type = 'info') => {
+    if (!messageElement) return;
+    messageElement.textContent = text;
+    messageElement.classList.remove('account-message--success', 'account-message--error');
+    if (type === 'success') messageElement.classList.add('account-message--success');
+    if (type === 'error') messageElement.classList.add('account-message--error');
 };
 
 const loadAccountData = async () => {
@@ -137,17 +182,24 @@ const saveAccountData = async () => {
     return response.json().catch(() => ({}));
 };
 
-if (accountForm) {
+// Registration form
+if (registerForm) {
     loadAccountData();
 
-    accountForm.addEventListener('submit', async (e) => {
+    registerForm.addEventListener('submit', async (e) => {
         e.preventDefault();
 
-        const nickname = (accountNicknameInput?.value || '').trim();
-        const email = (accountEmailInput?.value || '').trim();
+        const nickname = (registerNicknameInput?.value || '').trim();
+        const email = (registerEmailInput?.value || '').trim();
+        const password = (registerPasswordInput?.value || '').trim();
 
         if (!nickname) {
-            setAccountMessage('Введите никнейм.', 'error');
+            setAccountMessage(registerMessage, 'Введите никнейм.', 'error');
+            return;
+        }
+
+        if (!password) {
+            setAccountMessage(registerMessage, 'Введите пароль.', 'error');
             return;
         }
 
@@ -155,29 +207,26 @@ if (accountForm) {
             await resolveClientIp();
 
             if (!currentIp) {
-                setAccountMessage('Не удалось определить ваш IP адрес. Попробуйте позже.', 'error');
+                setAccountMessage(registerMessage, 'Не удалось определить ваш IP адрес. Попробуйте позже.', 'error');
                 return;
             }
 
             await loadAccountData();
 
-        if (accountUsers.some((user) => user.ip === currentIp)) {
-            setAccountMessage('На этот IP уже создан аккаунт. Сначала удалите существующий.', 'error');
-            return;
-        }
-
             const exists = accountUsers.some(
                 (user) => user.nickname && user.nickname.toLowerCase() === nickname.toLowerCase()
             );
             if (exists) {
-                setAccountMessage('Игрок с таким никнеймом уже существует.', 'error');
+                setAccountMessage(registerMessage, 'Игрок с таким никнеймом уже существует.', 'error');
                 return;
             }
 
+            const hashedPassword = hashPassword(password);
             const newUser = {
                 id: Date.now(),
                 nickname,
                 email: email || null,
+                password: hashedPassword,
                 createdAt: new Date().toISOString(),
                 ip: currentIp,
                 friends: [],
@@ -193,16 +242,70 @@ if (accountForm) {
             accountUsers.push(newUser);
             await saveAccountData();
 
-            setAccountMessage('Аккаунт успешно создан! Перенаправление в личный кабинет...', 'success');
+            setAccountMessage(registerMessage, 'Аккаунт успешно создан! Перенаправление в личный кабинет...', 'success');
 
+            // Save current user session
             localStorage.setItem('currentUser', JSON.stringify(newUser));
+            localStorage.setItem('isLoggedIn', 'true');
 
             setTimeout(() => {
                 window.location.href = 'dashboard.html';
             }, 1500);
         } catch (error) {
             console.error('Ошибка при создании аккаунта:', error);
-            setAccountMessage('Не удалось сохранить аккаунт. Попробуйте позже.', 'error');
+            setAccountMessage(registerMessage, 'Не удалось сохранить аккаунт. Попробуйте позже.', 'error');
+        }
+    });
+}
+
+// Login form
+if (loginForm) {
+    loginForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const nickname = (loginNicknameInput?.value || '').trim();
+        const password = (loginPasswordInput?.value || '').trim();
+
+        if (!nickname) {
+            setAccountMessage(loginMessage, 'Введите никнейм.', 'error');
+            return;
+        }
+
+        if (!password) {
+            setAccountMessage(loginMessage, 'Введите пароль.', 'error');
+            return;
+        }
+
+        try {
+            await loadAccountData();
+
+            const user = accountUsers.find(
+                (user) => user.nickname && user.nickname.toLowerCase() === nickname.toLowerCase()
+            );
+
+            if (!user) {
+                setAccountMessage(loginMessage, 'Пользователь с таким никнеймом не найден.', 'error');
+                return;
+            }
+
+            const hashedPassword = hashPassword(password);
+            if (user.password !== hashedPassword) {
+                setAccountMessage(loginMessage, 'Неверный пароль.', 'error');
+                return;
+            }
+
+            setAccountMessage(loginMessage, 'Вход выполнен успешно! Перенаправление в личный кабинет...', 'success');
+
+            // Save current user session
+            localStorage.setItem('currentUser', JSON.stringify(user));
+            localStorage.setItem('isLoggedIn', 'true');
+
+            setTimeout(() => {
+                window.location.href = 'dashboard.html';
+            }, 1500);
+        } catch (error) {
+            console.error('Ошибка при входе:', error);
+            setAccountMessage(loginMessage, 'Не удалось выполнить вход. Попробуйте позже.', 'error');
         }
     });
 }

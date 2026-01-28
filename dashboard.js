@@ -241,8 +241,9 @@ if (deleteAccountBtn) {
             if (!response.ok) throw new Error('Не удалось удалить аккаунт');
 
             localStorage.removeItem('currentUser');
+            localStorage.removeItem('isLoggedIn');
             showMessage('Аккаунт удалён. Перенаправление...', 'success');
-            setTimeout(() => window.location.href = 'account.html', 2000);
+            setTimeout(() => window.location.href = 'index.html', 2000);
         } catch (error) {
             showMessage('Не удалось удалить аккаунт', 'error');
         }
@@ -252,6 +253,7 @@ if (deleteAccountBtn) {
 if (logoutBtn) {
     logoutBtn.addEventListener('click', () => {
         localStorage.removeItem('currentUser');
+        localStorage.removeItem('isLoggedIn');
         window.location.href = 'index.html';
     });
 }

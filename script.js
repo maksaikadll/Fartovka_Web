@@ -256,3 +256,16 @@ tiltCards.forEach(card => {
     card.addEventListener('mousemove', handleMove);
     card.addEventListener('mouseleave', handleLeave);
 });
+
+// Check user authentication status and show/hide dashboard link
+const checkAuthentication = () => {
+    const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+    const dashboardNavItem = document.getElementById('dashboard-nav-item');
+
+    if (dashboardNavItem) {
+        dashboardNavItem.style.display = isLoggedIn ? '' : 'none';
+    }
+};
+
+// Check authentication on page load
+document.addEventListener('DOMContentLoaded', checkAuthentication);
