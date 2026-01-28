@@ -114,18 +114,25 @@ if (accountTabs) {
                 setTimeout(() => {
                     currentForm.style.display = 'none';
                     currentForm.classList.remove('fade-out');
-                }, 300);
+                    currentForm.style.opacity = '0';
+                    currentForm.style.transform = 'translateY(-20px)';
+                }, 600);
             }
 
             setTimeout(() => {
                 if (newForm) {
+                    newForm.style.opacity = '0';
+                    newForm.style.transform = 'translateY(20px)';
                     newForm.style.display = 'block';
-                    newForm.classList.add('fade-in');
-                    setTimeout(() => {
-                        newForm.classList.remove('fade-in');
-                    }, 500);
+
+                    requestAnimationFrame(() => {
+                        newForm.classList.add('fade-in');
+                        setTimeout(() => {
+                            newForm.classList.remove('fade-in');
+                        }, 600);
+                    });
                 }
-            }, currentForm && currentForm !== newForm ? 300 : 0);
+            }, currentForm && currentForm !== newForm ? 350 : 50);
         });
     });
 }
