@@ -148,3 +148,6 @@ obj/
 *.save
 *.game
 *.profile
+
+# OAuth configuration (remove from gitignore after setting up real credentials)
+oauth-example.js

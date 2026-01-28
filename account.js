@@ -311,17 +311,63 @@ if (loginForm) {
     });
 }
 
-const githubLoginBtn = document.getElementById('github-login-btn');
-if (githubLoginBtn) {
-    githubLoginBtn.addEventListener('click', () => {
-        setAccountMessage(loginMessage, 'Подключение к GitHub...', 'info');
+const oauthProviders = {
+    github: {
+        name: 'GitHub',
+        icon: 'github',
+        color: '#24292e',
+        authUrl: 'https://github.com/login/oauth/authorize',
+        clientId: 'your_github_client_id', // В реальном приложении нужно заменить
+        scope: 'user:email',
+        mockUser: {
+            provider: 'github',
+            nickname: 'github_user_',
+            email: 'user@github.com'
+        }
+    },
+    discord: {
+        name: 'Discord',
+        icon: 'discord',
+        color: '#5865f2',
+        authUrl: 'https://discord.com/api/oauth2/authorize',
+        clientId: 'your_discord_client_id', // В реальном приложении нужно заменить
+        scope: 'identify email',
+        mockUser: {
+            provider: 'discord',
+            nickname: 'discord_user_',
+            email: 'user@discord.com'
+        }
+    },
+    google: {
+        name: 'Google',
+        icon: 'google',
+        color: '#4285f4',
+        authUrl: 'https://accounts.google.com/o/oauth2/v2/auth',
+        clientId: 'your_google_client_id', // В реальном приложении нужно заменить
+        scope: 'openid email profile',
+        mockUser: {
+            provider: 'google',
+            nickname: 'google_user_',
+            email: 'user@gmail.com'
+        }
+    }
+};
 
-        setTimeout(() => {
-            const mockGithubUser = {
+const handleOAuthLogin = (provider) => {
+    const config = oauthProviders[provider];
+    if (!config) return;
+
+    setAccountMessage(loginMessage, `Подключение к ${config.name}...`, 'info');
+
+    // В реальном приложении здесь был бы реальный OAuth redirect
+    // Для демонстрации используем имитацию
+    setTimeout(() => {
+        try {
+            const mockUser = {
                 id: Date.now(),
-                nickname: 'github_user_' + Math.random().toString(36).substr(2, 9),
-                email: 'user@github.com',
-                password: hashPassword('github_oauth_token_' + Date.now()),
+                nickname: config.mockUser.nickname + Math.random().toString(36).substr(2, 6),
+                email: config.mockUser.email,
+                password: hashPassword(`${provider}_oauth_token_${Date.now()}`),
                 createdAt: new Date().toISOString(),
                 ip: null,
                 friends: [],
@@ -332,20 +378,32 @@ if (githubLoginBtn) {
                     draws: 0,
                     winRate: 0
                 },
-                githubLogin: true
+                oauthProvider: provider,
+                oauthLogin: true
             };
 
-            localStorage.setItem('currentUser', JSON.stringify(mockGithubUser));
+            localStorage.setItem('currentUser', JSON.stringify(mockUser));
             localStorage.setItem('isLoggedIn', 'true');
 
-            setAccountMessage(loginMessage, 'Вход через GitHub выполнен успешно! Перенаправление в личный кабинет...', 'success');
+            setAccountMessage(loginMessage, `Вход через ${config.name} выполнен успешно! Перенаправление в личный кабинет...`, 'success');
 
             setTimeout(() => {
                 window.location.href = 'dashboard.html';
             }, 1500);
-        }, 2000);
-    });
-}
+        } catch (error) {
+            console.error('OAuth error:', error);
+            setAccountMessage(loginMessage, `Ошибка входа через ${config.name}. Попробуйте позже.`, 'error');
+        }
+    }, 2500);
+};
+
+// Обработчики для всех OAuth кнопок
+Object.keys(oauthProviders).forEach(provider => {
+    const btn = document.getElementById(`${provider}-login-btn`);
+    if (btn) {
+        btn.addEventListener('click', () => handleOAuthLogin(provider));
+    }
+});
 
 if (profileCopyIdBtn) {
     profileCopyIdBtn.addEventListener('click', async () => {
