@@ -633,34 +633,165 @@ section {
 
 .account-tabs {
     display: flex;
-    gap: 0.5rem;
+    gap: 1rem;
     margin-bottom: 2rem;
     justify-content: center;
     flex-wrap: wrap;
+    position: relative;
 }
 
 .account-tabs .tab-btn {
-    padding: 0.75rem 1.5rem;
-    background: rgba(26, 47, 74, 0.5);
-    border: 1px solid var(--border-color);
-    border-radius: 8px;
+    padding: 0.8rem 2rem;
+    background: rgba(26, 47, 74, 0.3);
+    border: 2px solid transparent;
+    border-radius: 12px;
     color: var(--text-secondary);
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     font-family: 'Montserrat', sans-serif;
-    font-size: 0.9rem;
-    font-weight: 500;
+    font-size: 0.95rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    position: relative;
+    overflow: hidden;
+    backdrop-filter: blur(10px);
+}
+
+.account-tabs .tab-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(0, 191, 255, 0.2), transparent);
+    transition: left 0.5s ease;
+}
+
+.account-tabs .tab-btn:hover::before {
+    left: 100%;
 }
 
 .account-tabs .tab-btn:hover {
-    background: rgba(26, 47, 74, 0.7);
-    border-color: var(--primary-color);
+    background: rgba(26, 47, 74, 0.6);
+    border-color: rgba(0, 191, 255, 0.5);
+    color: var(--text-primary);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0, 191, 255, 0.15);
 }
 
 .account-tabs .tab-btn.active {
     background: var(--gradient-primary);
     color: white;
     border-color: var(--primary-color);
+    box-shadow: 0 0 30px rgba(0, 191, 255, 0.4), 0 0 60px rgba(0, 191, 255, 0.2);
+    transform: translateY(-2px);
+    animation: pulseGlow 2s ease-in-out infinite;
+}
+
+@keyframes pulseGlow {
+    0%, 100% {
+        box-shadow: 0 0 30px rgba(0, 191, 255, 0.4), 0 0 60px rgba(0, 191, 255, 0.2);
+    }
+    50% {
+        box-shadow: 0 0 40px rgba(0, 191, 255, 0.6), 0 0 80px rgba(0, 191, 255, 0.3);
+    }
+}
+
+.account-tabs .tab-btn:active {
+    transform: translateY(0);
+    transition: transform 0.1s ease;
+}
+
+/* Form transitions */
+.account-form {
+    animation: fadeInUp 0.5s ease-out;
+}
+
+.account-form.fade-out {
+    animation: fadeOutDown 0.3s ease-in forwards;
+}
+
+.account-form.fade-in {
+    animation: fadeInUp 0.5s ease-out;
+}
+
+/* Staggered form element animations */
+.account-form .form-group {
+    animation: slideInLeft 0.6s ease-out forwards;
+    opacity: 0;
+}
+
+.account-form .form-group:nth-child(1) { animation-delay: 0.1s; }
+.account-form .form-group:nth-child(2) { animation-delay: 0.2s; }
+.account-form .form-group:nth-child(3) { animation-delay: 0.3s; }
+
+.account-form .account-submit-btn {
+    animation: slideInUp 0.6s ease-out 0.4s forwards;
+    opacity: 0;
+}
+
+@keyframes slideInLeft {
+    from {
+        opacity: 0;
+        transform: translateX(-30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes slideInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeOutDown {
+    from {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    to {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+}
+
+/* Tab indicator animation */
+.account-tabs::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 0;
+    width: calc(50% - 0.5rem);
+    height: 3px;
+    background: var(--gradient-primary);
+    border-radius: 2px;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 0 10px rgba(0, 191, 255, 0.5);
+}
+
+.account-tabs .tab-btn.active:last-child::after {
+    left: calc(50% + 0.5rem);
 }
 
 .account-grid {
@@ -673,10 +804,25 @@ section {
 
 .account-form,
 .account-info {
-    background: rgba(26, 47, 74, 0.7);
-    border: 1px solid var(--border-color);
-    border-radius: 10px;
+    background: rgba(26, 47, 74, 0.8);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(0, 191, 255, 0.1);
+    border-radius: 16px;
     padding: 2.5rem;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3), 0 0 20px rgba(0, 191, 255, 0.05);
+    position: relative;
+    overflow: hidden;
+}
+
+.account-form::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: var(--gradient-primary);
+    opacity: 0.8;
 }
 
 .account-title {
@@ -687,6 +833,27 @@ section {
     color: var(--text-primary);
     text-transform: uppercase;
     letter-spacing: 2px;
+    background: var(--gradient-primary);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    position: relative;
+}
+
+.account-title::after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 2px;
+    background: var(--gradient-primary);
+    transition: width 0.4s ease;
+}
+
+.account-form:hover .account-title::after {
+    width: 100%;
 }
 
 .account-subtitle {

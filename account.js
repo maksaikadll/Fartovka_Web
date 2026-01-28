@@ -98,25 +98,40 @@ const renderMyAccount = (user) => {
     if (profileId) profileId.textContent = String(user.id ?? '—');
 };
 
-// Tab switching logic
+// Tab switching logic with smooth transitions
 if (accountTabs) {
     accountTabs.forEach(tab => {
         tab.addEventListener('click', () => {
             const targetForm = tab.getAttribute('data-form');
 
+            // Don't switch if already active
+            if (tab.classList.contains('active')) return;
+
             // Remove active class from all tabs
             accountTabs.forEach(t => t.classList.remove('active'));
             tab.classList.add('active');
 
-            // Hide all forms and show target form
-            if (registerForm) registerForm.style.display = 'none';
-            if (loginForm) loginForm.style.display = 'none';
+            // Animate form transitions
+            const currentForm = document.querySelector('.account-form[style*="display: block"]') || registerForm;
+            const newForm = targetForm === 'register' ? registerForm : loginForm;
 
-            if (targetForm === 'register' && registerForm) {
-                registerForm.style.display = 'block';
-            } else if (targetForm === 'login' && loginForm) {
-                loginForm.style.display = 'block';
+            if (currentForm && currentForm !== newForm) {
+                currentForm.classList.add('fade-out');
+                setTimeout(() => {
+                    currentForm.style.display = 'none';
+                    currentForm.classList.remove('fade-out');
+                }, 300);
             }
+
+            setTimeout(() => {
+                if (newForm) {
+                    newForm.style.display = 'block';
+                    newForm.classList.add('fade-in');
+                    setTimeout(() => {
+                        newForm.classList.remove('fade-in');
+                    }, 500);
+                }
+            }, currentForm && currentForm !== newForm ? 300 : 0);
         });
     });
 }
