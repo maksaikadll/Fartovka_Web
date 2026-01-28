@@ -257,13 +257,20 @@ tiltCards.forEach(card => {
     card.addEventListener('mouseleave', handleLeave);
 });
 
-const checkAuthentication = () => {
-    const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
-    const hasCurrentUser = !!localStorage.getItem('currentUser');
+const checkAuthentication = async () => {
     const dashboardNavItem = document.getElementById('dashboard-nav-item');
 
-    if (dashboardNavItem) {
-        dashboardNavItem.style.display = (isLoggedIn && hasCurrentUser) ? '' : 'none';
+    try {
+        const response = await fetch('/api/user');
+        const isLoggedIn = response.ok;
+
+        if (dashboardNavItem) {
+            dashboardNavItem.style.display = isLoggedIn ? '' : 'none';
+        }
+    } catch (error) {
+        if (dashboardNavItem) {
+            dashboardNavItem.style.display = 'none';
+        }
     }
 };
 

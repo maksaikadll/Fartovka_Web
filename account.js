@@ -355,46 +355,17 @@ const oauthProviders = {
 
 const handleOAuthLogin = (provider) => {
     const config = oauthProviders[provider];
-    if (!config) return;
+    if (!config) {
+        setAccountMessage(loginMessage, `OAuth провайдер ${provider} не настроен`, 'error');
+        return;
+    }
 
     setAccountMessage(loginMessage, `Подключение к ${config.name}...`, 'info');
 
-    // В реальном приложении здесь был бы реальный OAuth redirect
-    // Для демонстрации используем имитацию
+    // Небольшая задержка для показа сообщения
     setTimeout(() => {
-        try {
-            const mockUser = {
-                id: Date.now(),
-                nickname: config.mockUser.nickname + Math.random().toString(36).substr(2, 6),
-                email: config.mockUser.email,
-                password: hashPassword(`${provider}_oauth_token_${Date.now()}`),
-                createdAt: new Date().toISOString(),
-                ip: null,
-                friends: [],
-                stats: {
-                    gamesPlayed: 0,
-                    wins: 0,
-                    losses: 0,
-                    draws: 0,
-                    winRate: 0
-                },
-                oauthProvider: provider,
-                oauthLogin: true
-            };
-
-            localStorage.setItem('currentUser', JSON.stringify(mockUser));
-            localStorage.setItem('isLoggedIn', 'true');
-
-            setAccountMessage(loginMessage, `Вход через ${config.name} выполнен успешно! Перенаправление в личный кабинет...`, 'success');
-
-            setTimeout(() => {
-                window.location.href = 'dashboard.html';
-            }, 1500);
-        } catch (error) {
-            console.error('OAuth error:', error);
-            setAccountMessage(loginMessage, `Ошибка входа через ${config.name}. Попробуйте позже.`, 'error');
-        }
-    }, 2500);
+        window.location.href = `/auth/${provider}`;
+    }, 500);
 };
 
 // Обработчики для всех OAuth кнопок

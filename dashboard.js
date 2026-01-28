@@ -61,21 +61,24 @@ const showMessage = (text, type = 'info') => {
     console.log(`[${type.toUpperCase()}] ${text}`);
 };
 
-const loadCurrentUser = () => {
-    const userData = localStorage.getItem('currentUser');
-    if (!userData) {
-        showMessage('Пользователь не найден. Перенаправление...', 'error');
-        setTimeout(() => window.location.href = 'account.html', 2000);
-        return null;
-    }
-
+const loadCurrentUser = async () => {
     try {
-        currentUser = JSON.parse(userData);
+        const response = await fetch('/api/user');
+        if (!response.ok) {
+            if (response.status === 401) {
+                showMessage('Необходима авторизация. Перенаправление...', 'error');
+                setTimeout(() => window.location.href = 'account.html', 2000);
+                return null;
+            }
+            throw new Error('Failed to fetch user data');
+        }
+
+        const data = await response.json();
+        currentUser = data.user;
         return currentUser;
-    } catch (e) {
-        console.error('Ошибка парсинга данных пользователя:', e);
-        localStorage.removeItem('currentUser');
-        showMessage('Ошибка данных пользователя. Перенаправление...', 'error');
+    } catch (error) {
+        console.error('Ошибка загрузки данных пользователя:', error);
+        showMessage('Ошибка загрузки данных. Перенаправление...', 'error');
         setTimeout(() => window.location.href = 'account.html', 2000);
         return null;
     }
@@ -229,33 +232,30 @@ if (deleteAccountBtn) {
     deleteAccountBtn.addEventListener('click', async () => {
         if (!confirm('Вы уверены, что хотите удалить аккаунт? Это действие нельзя отменить.')) return;
 
-        try {
-            await loadAllUsers();
-            const updatedUsers = allUsers.filter(u => u.id !== currentUser.id);
-
-            const response = await fetch(DASHBOARD_API_URL, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ users: updatedUsers })
-            });
-
-            if (!response.ok) throw new Error('Не удалось удалить аккаунт');
-
-            localStorage.removeItem('currentUser');
-            localStorage.removeItem('isLoggedIn');
-            showMessage('Аккаунт удалён. Перенаправление...', 'success');
-            setTimeout(() => window.location.href = 'index.html', 2000);
-        } catch (error) {
-            showMessage('Не удалось удалить аккаунт', 'error');
-        }
+        showMessage('Удаление аккаунта... Пожалуйста, свяжитесь с администратором для удаления аккаунта OAuth.', 'info');
     });
 }
 
 if (logoutBtn) {
-    logoutBtn.addEventListener('click', () => {
-        localStorage.removeItem('currentUser');
-        localStorage.removeItem('isLoggedIn');
-        window.location.href = 'index.html';
+    logoutBtn.addEventListener('click', async () => {
+        try {
+            const response = await fetch('/auth/logout', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+
+            if (response.ok) {
+                window.location.href = 'index.html';
+            } else {
+                throw new Error('Logout failed');
+            }
+        } catch (error) {
+            console.error('Logout error:', error);
+            // Fallback: redirect anyway
+            window.location.href = 'index.html';
+        }
     });
 }
 

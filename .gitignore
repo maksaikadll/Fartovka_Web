@@ -149,5 +149,10 @@ obj/
 *.game
 *.profile
 
-# OAuth configuration (remove from gitignore after setting up real credentials)
+# Environment variables
+.env
+.env.local
+.env.production
+
+# OAuth configuration example
 oauth-example.js
