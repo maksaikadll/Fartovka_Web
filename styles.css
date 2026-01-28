@@ -319,7 +319,6 @@ body {
     100% { opacity: 0; transform: translateX(-50%) translateY(15px); }
 }
 
-/* Section Styles */
 section {
     padding: 100px 0;
     position: relative;
@@ -351,7 +350,6 @@ section {
     border-radius: 2px;
 }
 
-/* About Section */
 .about {
     background: linear-gradient(135deg, #1A2F4A 0%, #0A1A2E 100%);
 }
@@ -521,7 +519,6 @@ section {
     letter-spacing: 2px;
 }
 
-/* Rules Section */
 .rules {
     background: linear-gradient(135deg, #0A1A2E 0%, #1A2F4A 100%);
 }
@@ -626,7 +623,6 @@ section {
     color: var(--text-primary);
 }
 
-/* Account Section */
 .account {
     background: linear-gradient(135deg, #0A1A2E 0%, #1A2F4A 100%);
 }
@@ -704,7 +700,6 @@ section {
     transition: transform 0.1s ease;
 }
 
-/* Form transitions */
 .account-form {
     animation: fadeInUp 0.5s ease-out;
 }
@@ -717,7 +712,6 @@ section {
     animation: fadeInUp 0.5s ease-out;
 }
 
-/* Staggered form element animations */
 .account-form .form-group {
     animation: slideInLeft 0.6s ease-out forwards;
     opacity: 0;
@@ -776,7 +770,6 @@ section {
     }
 }
 
-/* Tab indicator animation */
 .account-tabs::after {
     content: '';
     position: absolute;
@@ -952,7 +945,6 @@ section {
     color: var(--text-muted);
 }
 
-/* Profile card (My Account) - dark neon / glassmorphism */
 .account-profile .profile-card {
     margin-top: 1rem;
     padding: 1.75rem;
@@ -1051,7 +1043,6 @@ section {
     text-align: center;
 }
 
-/* Download Section */
 .download {
     background: linear-gradient(135deg, #1A2F4A 0%, #0A1A2E 100%);
 }
@@ -1249,7 +1240,6 @@ section {
     margin: 0;
 }
 
-/* Steam-like collectible card hover + tilt */
 .feature-card,
 .card-type,
 .benefit-item,
@@ -1321,7 +1311,6 @@ section {
     transform: rotate(0deg) translateY(18%);
 }
 
-/* Collectible-card hover (Steam-like inspect) */
 .feature-card,
 .card-type,
 .benefit-item,
@@ -1497,7 +1486,6 @@ section {
     font-weight: normal;
 }
 
-/* Footer */
 .footer {
     background: #0a1118;
     border-top: 1px solid var(--border-color);
@@ -1552,7 +1540,6 @@ section {
     color: var(--text-muted);
 }
 
-/* Responsive Design */
 @media (max-width: 768px) {
     .nav-menu {
         position: fixed;
@@ -1645,18 +1632,15 @@ section {
     }
 }
 
-/* Smooth Scrolling */
 html {
     scroll-behavior: smooth;
 }
 
-/* Selection */
 ::selection {
     background: var(--primary-color);
     color: var(--text-primary);
 }
 
-/* Dashboard Styles */
 .dashboard-tabs {
     display: flex;
     gap: 1rem;
@@ -1772,7 +1756,6 @@ html {
     flex-wrap: wrap;
 }
 
-/* Friends Tab */
 .friends-section {
     max-width: 800px;
     margin: 0 auto;
@@ -1867,7 +1850,6 @@ html {
     gap: 0.5rem;
 }
 
-/* Stats Tab */
 .stats-section {
     max-width: 1000px;
     margin: 0 auto;
@@ -1934,7 +1916,6 @@ html {
     letter-spacing: 1px;
 }
 
-/* Additional poker-style elements */
 .lead-text {
     font-family: 'Oswald', sans-serif;
     font-weight: 400;

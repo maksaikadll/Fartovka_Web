@@ -26,18 +26,15 @@ if (hamburger && navMenu) {
 
 const ACCOUNT_API_URL = 'http://web4.informatics.ru:82/api/0b7f6114de5a56625f4a9a0c19e57123';
 
-// Account tabs
 const accountTabs = document.querySelectorAll('.account-tabs .tab-btn');
 const registerForm = document.getElementById('register-form');
 const loginForm = document.getElementById('login-form');
 
-// Registration form elements
 const registerNicknameInput = document.getElementById('register-nickname');
 const registerEmailInput = document.getElementById('register-email');
 const registerPasswordInput = document.getElementById('register-password');
 const registerMessage = document.getElementById('register-message');
 
-// Login form elements
 const loginNicknameInput = document.getElementById('login-nickname');
 const loginPasswordInput = document.getElementById('login-password');
 const loginMessage = document.getElementById('login-message');
@@ -98,20 +95,16 @@ const renderMyAccount = (user) => {
     if (profileId) profileId.textContent = String(user.id ?? '—');
 };
 
-// Tab switching logic with smooth transitions
 if (accountTabs) {
     accountTabs.forEach(tab => {
         tab.addEventListener('click', () => {
             const targetForm = tab.getAttribute('data-form');
 
-            // Don't switch if already active
             if (tab.classList.contains('active')) return;
 
-            // Remove active class from all tabs
             accountTabs.forEach(t => t.classList.remove('active'));
             tab.classList.add('active');
 
-            // Animate form transitions
             const currentForm = document.querySelector('.account-form[style*="display: block"]') || registerForm;
             const newForm = targetForm === 'register' ? registerForm : loginForm;
 
@@ -136,13 +129,12 @@ if (accountTabs) {
     });
 }
 
-// Simple hash function for passwords (not secure for production)
 const hashPassword = (password) => {
     let hash = 0;
     for (let i = 0; i < password.length; i++) {
         const char = password.charCodeAt(i);
         hash = ((hash << 5) - hash) + char;
-        hash = hash & hash; // Convert to 32-bit integer
+        hash = hash & hash;
     }
     return hash.toString();
 };
@@ -197,7 +189,6 @@ const saveAccountData = async () => {
     return response.json().catch(() => ({}));
 };
 
-// Registration form
 if (registerForm) {
     loadAccountData();
 
@@ -259,7 +250,6 @@ if (registerForm) {
 
             setAccountMessage(registerMessage, 'Аккаунт успешно создан! Перенаправление в личный кабинет...', 'success');
 
-            // Save current user session
             localStorage.setItem('currentUser', JSON.stringify(newUser));
             localStorage.setItem('isLoggedIn', 'true');
 
@@ -273,7 +263,6 @@ if (registerForm) {
     });
 }
 
-// Login form
 if (loginForm) {
     loginForm.addEventListener('submit', async (e) => {
         e.preventDefault();
@@ -311,7 +300,6 @@ if (loginForm) {
 
             setAccountMessage(loginMessage, 'Вход выполнен успешно! Перенаправление в личный кабинет...', 'success');
 
-            // Save current user session
             localStorage.setItem('currentUser', JSON.stringify(user));
             localStorage.setItem('isLoggedIn', 'true');
 

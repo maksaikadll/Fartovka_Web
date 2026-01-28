@@ -26,7 +26,6 @@ navLinks.forEach(link => {
 navLinks.forEach(link => {
     link.addEventListener('click', (e) => {
         const targetId = link.getAttribute('href');
-        // Allow normal navigation for external links (e.g. account.html)
         if (!targetId || !targetId.startsWith('#')) {
             return;
         }
@@ -257,7 +256,6 @@ tiltCards.forEach(card => {
     card.addEventListener('mouseleave', handleLeave);
 });
 
-// Check user authentication status and show/hide dashboard link
 const checkAuthentication = () => {
     const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
     const dashboardNavItem = document.getElementById('dashboard-nav-item');
@@ -267,5 +265,4 @@ const checkAuthentication = () => {
     }
 };
 
-// Check authentication on page load
 document.addEventListener('DOMContentLoaded', checkAuthentication);

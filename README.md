@@ -76,10 +76,9 @@ npx http-server
 
 ```css
 :root {
-    --primary-color: #ff4655;      /* Основной цвет */
-    --secondary-color: #0f1923;    /* Фоновый цвет */
-    --text-primary: #ece8e1;       /* Основной текст */
-    /* и т.д. */
+    --primary-color: #ff4655;
+    --secondary-color: #0f1923;
+    --text-primary: #ece8e1;
 }
 ```
 
