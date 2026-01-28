@@ -109,9 +109,9 @@ if (accountTabs) {
             const newForm = targetForm === 'register' ? registerForm : loginForm;
 
             if (currentForm && currentForm !== newForm) {
+                currentForm.classList.remove('active');
                 currentForm.classList.add('fade-out');
                 setTimeout(() => {
-                    currentForm.style.display = 'none';
                     currentForm.classList.remove('fade-out');
                     currentForm.style.opacity = '0';
                     currentForm.style.transform = 'translateY(-20px)';
@@ -120,9 +120,9 @@ if (accountTabs) {
 
             setTimeout(() => {
                 if (newForm) {
+                    newForm.classList.add('active');
                     newForm.style.opacity = '0';
                     newForm.style.transform = 'translateY(20px)';
-                    newForm.style.display = 'block';
 
                     requestAnimationFrame(() => {
                         newForm.classList.add('fade-in');
