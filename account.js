@@ -1,4 +1,5 @@
 
+// Version 1.2.0
 const navbar = document.querySelector('.navbar');
 const hamburger = document.querySelector('.hamburger');
 const navMenu = document.querySelector('.nav-menu');
