@@ -120,13 +120,18 @@
             const storedState = localStorage.getItem('oauth_state');
             const provider = localStorage.getItem('oauth_provider');
 
-            // Очищаем временные данные
-            localStorage.removeItem('oauth_state');
-            localStorage.removeItem('oauth_provider');
-
             const statusEl = document.getElementById('status');
             const messageEl = document.getElementById('message');
             const loadingEl = document.getElementById('loading');
+
+            // Проверяем на демо-режим (если нет stored state, значит демо)
+            const isDemoMode = !storedState;
+
+            if (!isDemoMode) {
+                // Очищаем временные данные только если не демо-режим
+                localStorage.removeItem('oauth_state');
+                localStorage.removeItem('oauth_provider');
+            }
 
             if (error) {
                 statusEl.textContent = 'Ошибка авторизации';
@@ -136,42 +141,41 @@
                 return;
             }
 
-            if (!code) {
-                statusEl.textContent = 'Ошибка авторизации';
-                statusEl.className = 'error';
-                messageEl.textContent = 'Не получен код авторизации';
-                loadingEl.style.display = 'none';
-                return;
-            }
-
-            if (state !== storedState) {
-                statusEl.textContent = 'Ошибка безопасности';
-                statusEl.className = 'error';
-                messageEl.textContent = 'Неверное состояние OAuth';
-                loadingEl.style.display = 'none';
-                return;
-            }
-
             try {
-                // В реальности здесь был бы запрос к вашему серверу для обмена кода на токен
-                // Но без сервера мы просто имитируем успешную авторизацию
+                let userData;
 
-                // Имитируем получение данных пользователя
-                const mockUserData = {
-                    id: Date.now().toString(),
-                    login: `${provider}_user_${Math.random().toString(36).substr(2, 6)}`,
-                    email: `user@${provider}.com`,
-                    name: `User from ${provider}`,
-                    avatar_url: null,
-                    picture: null
-                };
+                if (isDemoMode) {
+                    // Демо-режим: используем предопределенные данные
+                    userData = getDemoUserData(provider);
+                    messageEl.textContent = `🎉 Демо-${provider} авторизация успешна!`;
+                } else {
+                    // Реальный OAuth: проверяем state
+                    if (state !== storedState) {
+                        throw new Error('Неверное состояние OAuth');
+                    }
+
+                    if (!code) {
+                        throw new Error('Не получен код авторизации');
+                    }
+
+                    // Имитируем получение данных пользователя
+                    userData = {
+                        id: Date.now().toString(),
+                        login: `${provider}_user_${Math.random().toString(36).substr(2, 6)}`,
+                        email: `user@${provider}.com`,
+                        name: `User from ${provider}`,
+                        avatar_url: null,
+                        picture: null
+                    };
+                    messageEl.textContent = `Авторизация через ${provider} успешна!`;
+                }
 
                 // Создаем пользователя
-                const user = createOAuthUser(provider, mockUserData);
+                const user = createOAuthUser(provider, userData);
 
-                statusEl.textContent = 'Авторизация успешна!';
+                statusEl.textContent = 'Успешно!';
                 statusEl.className = 'success';
-                messageEl.textContent = `Добро пожаловать, ${user.nickname}! Перенаправление...`;
+                messageEl.textContent += `\nДобро пожаловать, ${user.nickname}! Перенаправление...`;
 
                 // Перенаправляем в личный кабинет через 2 секунды
                 setTimeout(() => {
@@ -182,9 +186,35 @@
                 console.error('OAuth callback error:', err);
                 statusEl.textContent = 'Ошибка авторизации';
                 statusEl.className = 'error';
-                messageEl.textContent = 'Не удалось обработать авторизацию';
+                messageEl.textContent = err.message || 'Не удалось обработать авторизацию';
                 loadingEl.style.display = 'none';
             }
+        }
+
+        function getDemoUserData(provider) {
+            const demoData = {
+                github: {
+                    id: '12345',
+                    login: 'demo_github_user',
+                    email: 'demo@github.com',
+                    name: 'Demo GitHub User',
+                    avatar_url: 'https://avatars.githubusercontent.com/u/1?v=4'
+                },
+                discord: {
+                    id: '67890',
+                    username: 'demo_discord_user',
+                    email: 'demo@discord.com',
+                    global_name: 'Demo Discord User',
+                    avatar: null
+                },
+                google: {
+                    id: '11111',
+                    email: 'demo@gmail.com',
+                    name: 'Demo Google User',
+                    picture: 'https://lh3.googleusercontent.com/a/default-avatar'
+                }
+            };
+            return demoData[provider] || demoData.github;
         }
 
         // Запускаем обработку при загрузке страницы

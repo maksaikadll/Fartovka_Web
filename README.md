@@ -39,10 +39,62 @@ OAuth работает в режиме имитации:
 - Обрабатывает callback локально в браузере
 - Создает пользователей в localStorage
 
-**Настройка:**
+**Быстрая настройка:**
 1. Откройте `oauth-simple.js`
 2. Замените `your_*_client_id` на реальные Client ID
 3. Установите redirect URI: `https://yourusername.github.io/repository-name/oauth/callback.html`
+
+**Подробные инструкции по настройке:**
+
+### GitHub OAuth Setup
+1. Перейдите на [GitHub Developer Settings](https://github.com/settings/developers)
+2. Нажмите "New OAuth App"
+3. Заполните:
+   - **Application name:** Fartovka Web
+   - **Homepage URL:** `https://yourusername.github.io/Fartovka_Web/` (или ваш URL)
+   - **Authorization callback URL:** `https://yourusername.github.io/Fartovka_Web/oauth/callback.html`
+4. Скопируйте **Client ID** и вставьте в `oauth-simple.js`:
+   ```javascript
+   github: {
+       clientId: 'ваш_github_client_id', // Скопируйте сюда
+       // ...
+   }
+   ```
+
+### Discord OAuth Setup
+1. Перейдите на [Discord Developer Portal](https://discord.com/developers/applications)
+2. Нажмите "New Application"
+3. В разделе "General Information" введите имя
+4. Перейдите в раздел "OAuth2" → "General"
+5. В поле **Redirects** добавьте: `https://yourusername.github.io/Fartovka_Web/oauth/callback.html`
+6. Скопируйте **Client ID** и вставьте в `oauth-simple.js`:
+   ```javascript
+   discord: {
+       clientId: 'ваш_discord_client_id', // Скопируйте сюда
+       // ...
+   }
+   ```
+
+### Google OAuth Setup
+1. Перейдите на [Google Cloud Console](https://console.cloud.google.com/)
+2. Создайте новый проект или выберите существующий
+3. Включите **Google+ API** в разделе "APIs & Services" → "Library"
+4. Перейдите в "APIs & Services" → "Credentials"
+5. Нажмите "Create Credentials" → "OAuth 2.0 Client IDs"
+6. Выберите тип "Web application"
+7. В разделе **Authorized redirect URIs** добавьте: `https://yourusername.github.io/Fartovka_Web/oauth/callback.html`
+8. Скопируйте **Client ID** и вставьте в `oauth-simple.js`:
+   ```javascript
+   google: {
+       clientId: 'ваш_google_client_id', // Скопируйте сюда
+       // ...
+   }
+   ```
+
+### Тестирование без настройки
+Если вы не хотите настраивать OAuth приложения, система покажет инструкции при клике на кнопки. Для тестирования:
+- **GitHub работает** без дополнительной настройки (использует реальные перенаправления)
+- **Discord и Google** требуют настройки Client ID
 
 #### Режим с сервером (полная функциональность)
 Для настоящей OAuth интеграции настройте приложения:
@@ -86,6 +138,12 @@ npm start
 - Кнопки OAuth перенаправят на реальные сервисы
 - После авторизации вы вернетесь с кодом
 - Система создаст пользователя локально
+
+### Важные замечания
+- **HTTPS обязательно** для Google OAuth в production
+- **GitHub Pages** использует HTTPS автоматически
+- **Локальная разработка** (`localhost`) работает без HTTPS
+- **Client ID** должен соответствовать домену в настройках приложения
 
 ## Описание
 
